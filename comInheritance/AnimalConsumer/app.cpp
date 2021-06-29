@@ -23,7 +23,7 @@ using tsmoreland::sample::try_execute;
 
 using std::wcout;
 
-int main()
+int main()  // NOLINT(bugprone-exception-escape)
 {
     try {
 
