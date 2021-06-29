@@ -1,0 +1,16 @@
+HKCR
+{
+	NoRemove CLSID
+	{
+		ForceRemove {13a9848a-51e9-4767-85d2-0251cd6f1b20} = s 'Animal class'
+		{
+			ForceRemove Programmable
+			LocalServer32 = s '%MODULE%'
+			{
+				val ServerExecutable = s '%MODULE_RAW%'
+			}
+			TypeLib = s '{66898145-113c-4862-8217-3a4202cb110f}'
+			Version = s '1.0'
+		}
+	}
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <assemblyIdentity type="win32" name="AnimalProducer" version="1.0.0.0" />
+
+  <file name="AnimalProducer.dll">
+    <comClass clsid="{90f017cc-e42e-4177-bf97-57d2ae475b13}" threadingModel="Apartment" />
+    <comClass clsid="{aaad5515-49b0-4faf-9fc2-ae1552aaacc1}" threadingModel="Apartment" />
+  </file>
+</assembly>

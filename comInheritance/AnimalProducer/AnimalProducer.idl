@@ -1,0 +1,98 @@
+// AnimalProducer.idl : IDL source for AnimalProducer
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (AnimalProducer.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#define MANAGED_NAME 0F21F359-AB84-41E8-9A78-36D110E6D2F9
+
+[
+	object,
+	uuid(3f195862-cbbd-45d1-bf9a-3a8073185948),
+	dual,
+	nonextensible,
+	pointer_default(unique),
+	custom(MANAGED_NAME, "TSMoreland.Sample.IAnimal")
+]
+interface IAnimal : IDispatch
+{
+	[id(1), helpstring("get the name")]
+	HRESULT Name([out, retval] BSTR* name);
+};
+
+
+[
+	object,
+	uuid(7941BAA4-FFF8-4A0D-8D79-F4A492567D30),
+	dual,
+	nonextensible,
+	pointer_default(unique),
+	custom(MANAGED_NAME, "TSMoreland.Sample.IAnimal2")
+]
+interface IAnimal2 : IAnimal
+{
+	[id(2), helpstring("get the namtop speed")]
+	HRESULT TopSpeed([out, retval] LONG* speed);
+};
+
+
+[
+	object,
+	uuid(BD13E476-E84B-4411-B8C0-AC04D1574CAA),
+	dual,
+	nonextensible,
+	pointer_default(unique),
+	custom(MANAGED_NAME, "TSMoreland.Sample.IAnimal3")
+]
+interface IAnimal3 : IAnimal2
+{
+	[id(3), helpstring("get the namtop speed")]
+	HRESULT CanSwim([out, retval] VARIANT_BOOL* canSwim);
+};
+
+
+[
+	object,
+	uuid(b5f07ceb-d8ad-4125-8b52-d118a828cf95),
+	dual,
+	nonextensible,
+	pointer_default(unique),
+	custom(MANAGED_NAME, "TSMoreland.Sample.IAnimalCrud")
+]
+interface IAnimalCrud : IDispatch
+{
+	[id(1), helpstring("create animmal")]
+	HRESULT CreateAnimal([out, retval] IAnimal** animal);
+
+};
+
+[
+	uuid(115ce6f5-086b-4a28-bd1a-8aa11c23a79a),
+	version(1.0),
+]
+library AnimalProducerLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(90f017cc-e42e-4177-bf97-57d2ae475b13)
+	]
+	coclass Animal
+	{
+		[default] interface IAnimal3;
+		interface IAnimal2;
+		interface IAnimal;
+	};
+	[
+		uuid(aaad5515-49b0-4faf-9fc2-ae1552aaacc1)
+	]
+	coclass AnimalCrud
+	{
+		[default] interface IAnimalCrud;
+	};
+};
+
+import "shobjidl.idl";
+import "shobjidl.idl";
