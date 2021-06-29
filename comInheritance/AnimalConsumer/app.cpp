@@ -29,10 +29,13 @@ int main()
 
         com_environment com{};
 
-        AnimalProducerLib::IAnimalPtr animal{ nullptr };
-        if (!try_execute([&animal]() { return animal.CreateInstance(__uuidof(AnimalProducerLib::Animal)); })) {
+        // isn't really need for is effectively a class factory, doing it mostly to show returning something more complex than BSTR or LONG
+        AnimalProducerLib::IAnimalCrudPtr repository{ nullptr };
+        if (!try_execute([&repository]() { return repository.CreateInstance(__uuidof(AnimalProducerLib::AnimalCrud)); })) {  // NOLINT(clang-diagnostic-language-extension-token)
             wcout << L"Unable to create an animal object.\n";
         }
+
+        AnimalProducerLib::IAnimalPtr animal{ repository->CreateAnimal() };
 
         auto const com_name = animal->Name();
         std::wstring const name{ com_name };

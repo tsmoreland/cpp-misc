@@ -16,9 +16,6 @@
 
 #include <comip.h>
 
-using animal_com_ptr_t = _com_ptr_t<_com_IIID<IAnimal, &__uuidof(IAnimal)>>;  // NOLINT(clang-diagnostic-language-extension-token)
-
-
 STDMETHODIMP CAnimalCrud::CreateAnimal(IAnimal** animal) noexcept 
 {
     if (animal == nullptr) {
