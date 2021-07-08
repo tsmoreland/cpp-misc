@@ -10,21 +10,39 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
-//{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by Producer.rc
-//
-#define IDS_PROJNAME                    100
-#define IDR_PRODUCER                    101
-#define IDR_FIELD                       106
 
-// Next default values for new objects
-// 
-#ifdef APSTUDIO_INVOKED
-#ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        201
-#define _APS_NEXT_COMMAND_VALUE         32768
-#define _APS_NEXT_CONTROL_VALUE         201
-#define _APS_NEXT_SYMED_VALUE           107
-#endif
-#endif
+// ReSharper disable CppInconsistentNaming
+#include "Field.h"
+
+
+STDMETHODIMP CField::GetZero(LONG* value) noexcept
+{
+    if (value == nullptr) {
+        return E_POINTER;
+    }
+
+    *value = zero_;
+
+    return S_OK;
+}
+STDMETHODIMP CField::GetOne(LONG* value) noexcept
+{
+    if (value == nullptr) {
+        return E_POINTER;
+    }
+
+    *value = one_;
+
+    return S_OK;
+}
+STDMETHODIMP CField::Add(LONG first, long second, LONG* value) noexcept
+{
+    if (value == nullptr) {
+        return E_POINTER;
+    }
+
+    // posible overflow or rather wrap around to negative,
+    // but meh it's a demo for COM not addition
+    *value = first + second;
+    return S_OK;
+}

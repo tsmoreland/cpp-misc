@@ -222,6 +222,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Field.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Producer_i.h" />
     <ClInclude Include="Resource.h" />
@@ -229,6 +230,7 @@
     <ClInclude Include="xdlldata.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="Producer.cpp" />
     <ClCompile Include="Producer_i.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
@@ -259,6 +261,7 @@
     <ResourceCompile Include="Producer.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Field.rgs" />
     <None Include="Producer.rgs" />
   </ItemGroup>
   <ItemGroup>
