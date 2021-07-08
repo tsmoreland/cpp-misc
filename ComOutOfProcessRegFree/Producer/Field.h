@@ -22,13 +22,12 @@
 
 using namespace ATL;
 
-
 // CField
 
 class ATL_NO_VTABLE CField :  // NOLINT(clang-diagnostic-non-virtual-dtor)
 	public CComObjectRootEx<CComMultiThreadModel>,
 	public CComCoClass<CField, &CLSID_Field>,
-	public IDispatchImpl<IGroup, &IID_IGroup, &LIBID_ProducerLib, /*wMajor =*/ 1, /*wMinor =*/ 0>
+	public IDispatchImpl<IField, &IID_IField, &LIBID_ProducerLib, /*wMajor =*/ 1, /*wMinor =*/ 0>
 {
 	const LONG zero_ = 0;
 	const LONG one_ = 1;
@@ -37,6 +36,8 @@ public:
 	STDMETHOD(GetZero)(LONG* value) noexcept override;
 	STDMETHOD(GetOne)(LONG* value) noexcept override;
 	STDMETHOD(Add)(LONG first, LONG second, LONG* value) noexcept override;
+	STDMETHOD(Multiply)(LONG first, LONG second, LONG* value) noexcept override;
+	STDMETHOD(Divide)(LONG first, LONG second, LONG* value) noexcept override;
 
 
 	CField() = default;
@@ -46,6 +47,8 @@ DECLARE_REGISTRY_RESOURCEID(106)
 DECLARE_NOT_AGGREGATABLE(CField)
 
 BEGIN_COM_MAP(CField)
+	COM_INTERFACE_ENTRY(IField)
+	COM_INTERFACE_ENTRY(IRing)
 	COM_INTERFACE_ENTRY(IGroup)
 	COM_INTERFACE_ENTRY(IDispatch)
 END_COM_MAP()

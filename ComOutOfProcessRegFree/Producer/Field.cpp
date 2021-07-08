@@ -14,7 +14,6 @@
 // ReSharper disable CppInconsistentNaming
 #include "Field.h"
 
-
 STDMETHODIMP CField::GetZero(LONG* value) noexcept
 {
     if (value == nullptr) {
@@ -44,5 +43,33 @@ STDMETHODIMP CField::Add(LONG first, long second, LONG* value) noexcept
     // posible overflow or rather wrap around to negative,
     // but meh it's a demo for COM not addition
     *value = first + second;
+    return S_OK;
+}
+
+STDMETHODIMP CField::Multiply(LONG first, LONG second, LONG* value) noexcept
+{
+    if (value == nullptr) {
+        return E_POINTER;
+    }
+
+    // posible overflow or rather wrap around to negative,
+    // but meh it's a demo for COM not addition
+    *value = first * second;
+    return S_OK;
+}
+
+STDMETHODIMP CField::Divide(LONG first, LONG second, LONG* value) noexcept
+{
+    if (value == nullptr) {
+        return E_POINTER;
+    }
+
+    if (second == 0) {
+        return E_INVALIDARG;
+    }
+
+    // posible overflow or rather wrap around to negative,
+    // but meh it's a demo for COM not addition
+    *value = first / second;
     return S_OK;
 }

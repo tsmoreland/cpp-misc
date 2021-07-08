@@ -52,6 +52,19 @@ interface IRing : IGroup
 };
 
 [
+	object,
+	uuid(D48307EE-16BA-4879-BE23-459005927207),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IField : IRing
+{
+	[id(5), helpstring("returns the result of dividing first and second - not truly valid since Integers don't form a Field only a Ring")]
+	HRESULT Divide([in] LONG first, [in] LONG second, [out, retval] LONG* value);
+};
+
+[
 	uuid(b333f46a-866b-4454-a4a8-68cd6fefd564),
 	version(1.0),
 ]
@@ -63,7 +76,9 @@ library ProducerLib
 	]
 	coclass Field
 	{
-		[default] interface IGroup;
+		[default] interface IField;
+		interface IRing;
+		interface IGroup;
 	};
 };
 
