@@ -1,0 +1,18 @@
+// Producer.idl : IDL source for Producer
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (Producer.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(b333f46a-866b-4454-a4a8-68cd6fefd564),
+	version(1.0),
+]
+library ProducerLib
+{
+	importlib("stdole2.tlb");
+};
+
