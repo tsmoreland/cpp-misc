@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <assemblyIdentity type="win32" name="Producer" version="1.0.0.0" />
+
+  <file name="Producer.exe">
+    <comClass clsid="{309ea226-46f4-47c0-95c3-f7f0c80f5547}" threadingModel="Both" />
+    <typelib tlbid="{b333f46a-866b-4454-a4a8-68cd6fefd564}" 
+             version="1.0" 
+             helpdir="" />
+  </file>
+</assembly>

@@ -70,18 +70,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
+    <EmbedManifest>false</EmbedManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
+    <EmbedManifest>false</EmbedManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
+    <EmbedManifest>false</EmbedManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
+    <EmbedManifest>false</EmbedManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -116,6 +120,14 @@
       <SubSystem>Windows</SubSystem>
       <RegisterOutput>false</RegisterOutput>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>Manifest.xml</AdditionalManifestFiles>
+      <OutputManifestFile>$(OutDir)$(ProjectName).manifest</OutputManifestFile>
+    </Manifest>
+    <PostBuildEvent>
+      <Command>mt -manifest Manifest.xml -out:"$(OutDir)$(ProjectName).manifest" -nologo
+tlbimp $(IntDir)$(AssemblyName).tlb /out:$(OutDir)interop.$(AssemblyName).dll</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -149,6 +161,14 @@
       <SubSystem>Windows</SubSystem>
       <RegisterOutput>false</RegisterOutput>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>Manifest.xml</AdditionalManifestFiles>
+      <OutputManifestFile>$(OutDir)$(ProjectName).manifest</OutputManifestFile>
+    </Manifest>
+    <PostBuildEvent>
+      <Command>mt -manifest Manifest.xml -out:"$(OutDir)$(ProjectName).manifest" -nologo
+tlbimp $(IntDir)$(AssemblyName).tlb /out:$(OutDir)interop.$(AssemblyName).dll</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -185,6 +205,14 @@
       <OptimizeReferences>true</OptimizeReferences>
       <RegisterOutput>false</RegisterOutput>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>Manifest.xml</AdditionalManifestFiles>
+      <OutputManifestFile>$(OutDir)$(ProjectName).manifest</OutputManifestFile>
+    </Manifest>
+    <PostBuildEvent>
+      <Command>mt -manifest Manifest.xml -out:"$(OutDir)$(ProjectName).manifest" -nologo
+tlbimp $(IntDir)$(AssemblyName).tlb /out:$(OutDir)interop.$(AssemblyName).dll</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -220,6 +248,14 @@
       <OptimizeReferences>true</OptimizeReferences>
       <RegisterOutput>false</RegisterOutput>
     </Link>
+    <Manifest>
+      <AdditionalManifestFiles>Manifest.xml</AdditionalManifestFiles>
+      <OutputManifestFile>$(OutDir)$(ProjectName).manifest</OutputManifestFile>
+    </Manifest>
+    <PostBuildEvent>
+      <Command>mt -manifest Manifest.xml -out:"$(OutDir)$(ProjectName).manifest" -nologo
+tlbimp $(IntDir)$(AssemblyName).tlb /out:$(OutDir)interop.$(AssemblyName).dll</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Field.h" />
@@ -266,6 +302,14 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="Producer.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Manifest.xml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Xml>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
