@@ -11,13 +11,16 @@
   <comInterfaceExternalProxyStub name="IGroup"
                                  iid="{3133404a-56e9-426b-af80-db19d3c3aab6}"
                                  proxyStubClsid32="{00020424-0000-0000-C000-000000000046}"
+                                 baseInterface="{00020400-0000-0000-C000-000000000046}"
                                  tlbid="{b333f46a-866b-4454-a4a8-68cd6fefd564}" />
   <comInterfaceExternalProxyStub name="IRing"
                                  iid="{6798327A-BEBA-4EA3-9D22-2ABB8834B776}"
                                  proxyStubClsid32="{00020424-0000-0000-C000-000000000046}"
+                                 baseInterface="{00020400-0000-0000-C000-000000000046}"
                                  tlbid="{b333f46a-866b-4454-a4a8-68cd6fefd564}" />
   <comInterfaceExternalProxyStub name="IField"
                                  iid="{D48307EE-16BA-4879-BE23-459005927207}"
                                  proxyStubClsid32="{00020424-0000-0000-C000-000000000046}"
+                                 baseInterface="{00020400-0000-0000-C000-000000000046}"
                                  tlbid="{b333f46a-866b-4454-a4a8-68cd6fefd564}" />
 </assembly>
