@@ -19,7 +19,8 @@ int main()
 
         if (auto const [success, hr] = try_execute([&field]() { return field.CreateInstance(__uuidof(ProducerLib::Field)); });
             !success) { // NOLINT(clang-diagnostic-language-extension-token)
-            wcout << "Failed to create instance, probably require to launch exe first (HRESULT " << std::hex <<  hr << " \n";
+            HRESULT hresult = hr;
+            wcout << "Failed to create instance, probably require to launch exe first (HRESULT " << std::hex <<  hresult << " \n";
             return -1;
         }
 

@@ -38,7 +38,7 @@ namespace tsmoreland::sample
     template <typename STDMETHOD_FUNCTOR>
     constexpr auto try_execute(STDMETHOD_FUNCTOR functor)
     {
-        if (const HRESULT hr = functor();
+        if (HRESULT const hr = functor();
             FAILED(hr)) {
             std::cout << com_environment::to_string(hr) << "\n";
             return std::make_tuple(false, hr);
