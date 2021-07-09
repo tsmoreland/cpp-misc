@@ -6,6 +6,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="com_environment.h" />
+    <ClInclude Include="imports.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Manifest.xml" />

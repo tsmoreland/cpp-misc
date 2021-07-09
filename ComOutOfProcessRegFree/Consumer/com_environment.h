@@ -41,9 +41,9 @@ namespace tsmoreland::sample
         if (const HRESULT hr = functor();
             FAILED(hr)) {
             std::cout << com_environment::to_string(hr) << "\n";
-            return false;
+            return std::make_tuple(false, hr);
         }
-        return true;
+        return std::make_tuple(true, S_OK);
     }
 
     template<typename DESTINATION_INTERFACE, typename SOURCE_INTERFACE>
