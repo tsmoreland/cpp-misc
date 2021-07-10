@@ -17,7 +17,11 @@ int main()
 
         ProducerLib::IFieldPtr field{ nullptr };
 
-        if (auto const [success, hr] = try_execute([&field]() { return field.CreateInstance(__uuidof(ProducerLib::Field)); });
+        if (auto const [success, hr] = try_execute(
+            [&field]() {
+                return field.CreateInstance(__uuidof(ProducerLib::Field), nullptr, CLSCTX_LOCAL_SERVER); // NOLINT(clang-diagnostic-language-extension-token)
+                //return field.CreateInstance(__uuidof(ProducerLib::Field));// NOLINT(clang-diagnostic-language-extension-token)
+            });  
             !success) { // NOLINT(clang-diagnostic-language-extension-token)
             HRESULT hresult = hr;
             wcout << "Failed to create instance, probably require to launch exe first (HRESULT " << std::hex <<  hresult << " \n";

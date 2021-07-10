@@ -3,24 +3,27 @@
   <assemblyIdentity type="win32" name="Producer" version="1.0.0.0" />
 
   <file name="Producer.exe">
-    <typelib tlbid="{b333f46a-866b-4454-a4a8-68cd6fefd564}" 
+    <typelib tlbid="{B333F46A-866B-4454-A4A8-68CD6FEFD564}" 
              version="1.0" 
-             helpdir="" />
-    <comClass clsid="{309ea226-46f4-47c0-95c3-f7f0c80f5547}" threadingModel="Apartment" />
+             flags="" 
+             helpdir=""/>
+    <comClass progid="ProducerLib.Field" 
+              clsid="{309EA226-46F4-47C0-95C3-F7F0C80F5547}" 
+              threadingModel="Apartment"/>
   </file>
-  <comInterfaceExternalProxyStub name="IGroup"
-                                 iid="{3133404a-56e9-426b-af80-db19d3c3aab6}"
+  <comInterfaceExternalProxyStub name="IField" 
+                                 iid="{D48307EE-16BA-4879-BE23-459005927207}"
                                  proxyStubClsid32="{00020424-0000-0000-C000-000000000046}"
-                                 baseInterface="{00020400-0000-0000-C000-000000000046}"
-                                 tlbid="{b333f46a-866b-4454-a4a8-68cd6fefd564}" />
+                                 baseInterface="{00000000-0000-0000-C000-000000000046}"
+                                 tlbid = "{B333F46A-866B-4454-A4A8-68CD6FEFD564}"/>
   <comInterfaceExternalProxyStub name="IRing"
                                  iid="{6798327A-BEBA-4EA3-9D22-2ABB8834B776}"
                                  proxyStubClsid32="{00020424-0000-0000-C000-000000000046}"
-                                 baseInterface="{00020400-0000-0000-C000-000000000046}"
-                                 tlbid="{b333f46a-866b-4454-a4a8-68cd6fefd564}" />
-  <comInterfaceExternalProxyStub name="IField"
-                                 iid="{D48307EE-16BA-4879-BE23-459005927207}"
+                                 baseInterface="{00000000-0000-0000-C000-000000000046}"
+                                 tlbid = "{B333F46A-866B-4454-A4A8-68CD6FEFD564}"/>
+  <comInterfaceExternalProxyStub name="IGroup"
+                                 iid="{3133404A-56E9-426B-AF80-DB19D3C3AAB6}"
                                  proxyStubClsid32="{00020424-0000-0000-C000-000000000046}"
-                                 baseInterface="{00020400-0000-0000-C000-000000000046}"
-                                 tlbid="{b333f46a-866b-4454-a4a8-68cd6fefd564}" />
+                                 baseInterface="{00000000-0000-0000-C000-000000000046}"
+                                 tlbid = "{B333F46A-866B-4454-A4A8-68CD6FEFD564}"/>
 </assembly>
