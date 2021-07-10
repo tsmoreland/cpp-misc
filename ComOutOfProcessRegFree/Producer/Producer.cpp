@@ -1,22 +1,10 @@
-//
-// Copyright © 2021 Terry Moreland
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
-// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
-// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-// WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-// 
-
 // Producer.cpp : Implementation of WinMain
 
+
+#include "pch.h"
 #include "framework.h"
-#include "Resource.h"
+#include "resource.h"
 #include "Producer_i.h"
-#include "xdlldata.h"
 
 
 using namespace ATL;
@@ -26,7 +14,7 @@ class CProducerModule : public ATL::CAtlExeModuleT< CProducerModule >
 {
 public :
 	DECLARE_LIBID(LIBID_ProducerLib)
-	DECLARE_REGISTRY_APPID_RESOURCEID(IDR_PRODUCER, "{b333f46a-866b-4454-a4a8-68cd6fefd564}")
+	DECLARE_REGISTRY_APPID_RESOURCEID(IDR_PRODUCER, "{a61e324a-02da-4ae8-b7e6-168a9cb1c7af}")
 };
 
 CProducerModule _AtlModule;

@@ -161,11 +161,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Producer\Producer.vcxproj">
-      <Project>{b0a5813f-22ef-4832-9f81-e0786e581b2c}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="com_environment.h" />
     <ClInclude Include="imports.h" />
   </ItemGroup>

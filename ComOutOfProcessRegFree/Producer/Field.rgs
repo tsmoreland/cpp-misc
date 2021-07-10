@@ -2,14 +2,14 @@ HKCR
 {
 	NoRemove CLSID
 	{
-		ForceRemove {309ea226-46f4-47c0-95c3-f7f0c80f5547} = s 'Field class'
+		ForceRemove {e7c4a90b-4368-48e5-820e-4b075bae1183} = s 'Field class'
 		{
 			ForceRemove Programmable
-			InprocServer32 = s '%MODULE%'
+			LocalServer32 = s '%MODULE%'
 			{
-				val ThreadingModel = s 'Apartment'
+				val ServerExecutable = s '%MODULE_RAW%'
 			}
-			TypeLib = s '{b333f46a-866b-4454-a4a8-68cd6fefd564}'
+			TypeLib = s '{a61e324a-02da-4ae8-b7e6-168a9cb1c7af}'
 			Version = s '1.0'
 		}
 	}

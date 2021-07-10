@@ -15,7 +15,7 @@ int main()
     try {
         com_environment environment{};
 
-        ProducerLib::IFieldPtr field{ nullptr };
+        ProducerLib::IGroupPtr field{ nullptr };
 
         if (auto const [success, hr] = try_execute(
             [&field]() {

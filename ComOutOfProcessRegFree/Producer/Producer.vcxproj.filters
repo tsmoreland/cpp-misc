@@ -14,33 +14,33 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Generated Files">
-      <UniqueIdentifier>{067e256c-a225-4cbb-871e-99b0b8233e5f}</UniqueIdentifier>
+      <UniqueIdentifier>{690ecda9-746e-45d3-9f8d-4d9bf73dfd39}</UniqueIdentifier>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="COM">
-      <UniqueIdentifier>{cfb1d643-03b7-4564-aa9c-c34d18658679}</UniqueIdentifier>
+      <UniqueIdentifier>{ae933206-7aa1-4055-a948-3e1ee94324e7}</UniqueIdentifier>
     </Filter>
     <Filter Include="COM\Header Files">
-      <UniqueIdentifier>{ad31aca7-0978-4dc9-9fa8-99b89c433b74}</UniqueIdentifier>
+      <UniqueIdentifier>{532d3ef1-b08d-45dc-aabc-ab0d77b002c4}</UniqueIdentifier>
     </Filter>
     <Filter Include="COM\Source Files">
-      <UniqueIdentifier>{8f5f5978-d3f4-4896-b93b-b237efffe09e}</UniqueIdentifier>
+      <UniqueIdentifier>{e4d5b289-cd32-4283-8cd5-4857d247dd0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Producer_i.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="framework.h">
-      <Filter>COM\Header Files</Filter>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>COM\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="targetver.h">
+    <ClInclude Include="framework.h">
       <Filter>COM\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="xdlldata.h">
+    <ClInclude Include="targetver.h">
       <Filter>COM\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Field.h">
@@ -51,10 +51,10 @@
     <ClCompile Include="Producer_i.c">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="Producer.cpp">
-      <Filter>COM\Source Files</Filter>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="xdlldata.c">
+    <ClCompile Include="Producer.cpp">
       <Filter>COM\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Field.cpp">
@@ -78,10 +78,5 @@
     <Midl Include="Producer.idl">
       <Filter>COM</Filter>
     </Midl>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="Manifest.xml">
-      <Filter>Resource Files</Filter>
-    </Xml>
   </ItemGroup>
 </Project>
