@@ -17,6 +17,21 @@ int main()
 
         ProducerLib::IFieldPtr field{ nullptr };
 
+        IClassFactory* class_factory{ nullptr };
+
+        if (auto const hr = CoGetClassObject(__uuidof(ProducerLib::Field), CLSCTX_LOCAL_SERVER, nullptr, IID_IClassFactory, reinterpret_cast<void**>(&class_factory)); // NOLINT(clang-diagnostic-language-extension-token)
+            FAILED(hr)) {
+            return -1;
+        }
+        IUnknown* unknown;
+        if (auto const hr = class_factory->CreateInstance(nullptr, __uuidof(ProducerLib::IField), reinterpret_cast<void**>(&unknown)); // NOLINT(clang-diagnostic-language-extension-token)
+            FAILED(hr)) {
+
+            return -1;
+        }
+        class_factory->Release(); 
+
+
         if (auto const [success, hr] = try_execute(
             [&field]() {
                 return field.CreateInstance(__uuidof(ProducerLib::Field), nullptr, CLSCTX_LOCAL_SERVER); // NOLINT(clang-diagnostic-language-extension-token)
