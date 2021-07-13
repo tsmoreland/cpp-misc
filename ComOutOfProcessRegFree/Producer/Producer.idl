@@ -22,14 +22,42 @@ interface IGroup : IDispatch
 
 };
 [
-	uuid(a61e324a-02da-4ae8-b7e6-168a9cb1c7af),
+	object,
+	uuid(6798327A-BEBA-4EA3-9D22-2ABB8834B776),
+	dual,
+	oleautomation,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IRing : IGroup
+{
+	[id(4), helpstring("returns the result of multplying first and second")]
+	HRESULT Multiply([in] LONG first, [in] LONG second, [out, retval] LONG* value);
+};
+
+[
+	object,
+	uuid(D48307EE-16BA-4879-BE23-459005927207),
+	dual,
+	oleautomation,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IField : IRing
+{
+	[id(5), helpstring("returns the result of dividing first and second - not truly valid since Integers don't form a Field only a Ring")]
+	HRESULT Divide([in] LONG first, [in] LONG second, [out, retval] LONG* value);
+};
+
+[
+	uuid(b333f46a-866b-4454-a4a8-68cd6fefd564),
 	version(1.0),
 ]
 library ProducerLib
 {
 	importlib("stdole2.tlb");
 	[
-		uuid(e7c4a90b-4368-48e5-820e-4b075bae1183)
+	uuid(a61e324a-02da-4ae8-b7e6-168a9cb1c7af),
 	]
 	coclass Field
 	{
