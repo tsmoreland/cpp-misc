@@ -19,8 +19,12 @@ interface IGroup : IDispatch
 {
 	[id(1), helpstring("zero")]
 	HRESULT GetZero([out, retval] LONG* value);
-
+	[id(2), helpstring("one")]
+	HRESULT GetOne([out, retval] LONG* value);
+	[id(3), helpstring("add to values")]
+	HRESULT Add([in] LONG first, [in] LONG second, [out, retval] LONG* value);
 };
+
 [
 	object,
 	uuid(6798327A-BEBA-4EA3-9D22-2ABB8834B776),
@@ -61,7 +65,9 @@ library ProducerLib
 	]
 	coclass Field
 	{
-		[default] interface IGroup;
+		[default] interface IField;
+		interface IRing;
+		interface IGroup;
 	};
 };
 

@@ -1,9 +1,8 @@
 // Field.h : Declaration of the CField
 
 #pragma once
-#include "resource.h"       // main symbols
+#include "Resource.h"       // main symbols
 #include "Producer_i.h"
-
 
 
 #if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
@@ -18,12 +17,16 @@ using namespace ATL;
 class ATL_NO_VTABLE CField :  // NOLINT(clang-diagnostic-non-virtual-dtor)
 	public CComObjectRootEx<CComSingleThreadModel>,
 	public CComCoClass<CField, &CLSID_Field>,
-	public IDispatchImpl<IGroup, &IID_IGroup, &LIBID_ProducerLib, /*wMajor =*/ 1, /*wMinor =*/ 0>
+	public IDispatchImpl<IField, &IID_IField, &LIBID_ProducerLib, /*wMajor =*/ 1, /*wMinor =*/ 0>
 {
     const int zero_ = 0;
     const int one_ = 1;
 public:
     STDMETHOD(GetZero)(LONG* value) noexcept override;
+    STDMETHOD(GetOne)(LONG* value) noexcept override;
+    STDMETHOD(Add)(LONG first, LONG second, LONG* value) noexcept override;
+    STDMETHOD(Multiply)(LONG first, LONG second, LONG* value) noexcept override;
+    STDMETHOD(Divide)(LONG first, LONG second, LONG* value) noexcept override;
 
 
     CField() = default;
@@ -33,6 +36,8 @@ DECLARE_REGISTRY_RESOURCEID(106)
 DECLARE_NOT_AGGREGATABLE(CField)
 
 BEGIN_COM_MAP(CField)
+	COM_INTERFACE_ENTRY(IField)
+	COM_INTERFACE_ENTRY(IRing)
 	COM_INTERFACE_ENTRY(IGroup)
 	COM_INTERFACE_ENTRY(IDispatch)
 END_COM_MAP()
