@@ -165,6 +165,7 @@ namespace tsmoreland::periodic_monitor
                     continue;
                 }
 
+            /*
                 // the following is repetitive but need after anything that may take some time, including
                 // entering a lock
                 if (shutdown = get_shutdown(); shutdown) {
@@ -177,9 +178,7 @@ namespace tsmoreland::periodic_monitor
                     return;
                 }
 
-                std::vector<TKEY> processed{};
-                process_items(active_items, processed);
-
+                std::vector<TKEY> processed{ process_items(active_items) };
                 if (shutdown = get_shutdown(); shutdown) {
                     return;
                 }
@@ -197,6 +196,7 @@ namespace tsmoreland::periodic_monitor
                 } else {
                     wait = true;
                 }
+            */
             }
 
         }
@@ -204,9 +204,9 @@ namespace tsmoreland::periodic_monitor
         [[nodiscard]]
         bool wait_for_poll_period_or_minimum_delay_timed_out(bool const has_items) const
         {
-            auto const period  = minimum_delay_.value_or(0) < poll_period_
+            auto const period  = minimum_delay_.value_or(std::chrono::seconds(0)) < poll_period_
                 ? poll_period_
-                : minimum_delay_.value_or(0);
+                : minimum_delay_.value_or(std::chrono::seconds(0));
 
             if (has_items) {
                 if (!poll_event_.wait_one(period)) {

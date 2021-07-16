@@ -2,5 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\..\modern_win32\src\modern_win32\wait_for.cpp" />
+    <ClCompile Include="..\..\modern_win32\src\modern_win32\windows_error.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sample_monitor.h" />
   </ItemGroup>
 </Project>

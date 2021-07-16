@@ -11,46 +11,35 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
+#pragma once
+
 #include <iostream>
-#include "sample_monitor.h"
+#include "periodic_monitor/monitor.h"
 
-using tsmoreland::periodic_monitor::app::sample_monitor;
-
-using std::literals::chrono_literals::operator ""ms;
-using std::literals::chrono_literals::operator ""s;
-
-
-int main()
+namespace tsmoreland::periodic_monitor::app
 {
-    try {
-        sample_monitor monitor{ 1500ms, 2s };
-
-        int i;
-        for (i = 0; i < 4; i++) {
-            monitor.add(i);
+    class sample_monitor final : public monitor<int>
+    {
+        using milliseconds = std::chrono::milliseconds;
+        using optional_milliseconds = std::optional<std::chrono::milliseconds>;
+    public:
+        explicit sample_monitor(milliseconds const& poll_period, milliseconds const& life_time, optional_milliseconds const& minimum_delay = std::nullopt)
+            : monitor<int>(poll_period, life_time, minimum_delay)
+        {
         }
 
-        monitor.start();
+    protected:
+        std::vector<int> process_items(std::vector<int> const& items) final
+        {
+            std::vector<int> processed{};
 
-        std::this_thread::sleep_for(2s);
-
-        for (; i < 8; i++) {
-            monitor.add(i);
+            for (auto const& item : items) {
+                if (item % 2 == 0) {
+                    processed.push_back(item);
+                    std::cout << "remove " << item << "\n";
+                }
+            }
+            return processed;
         }
-
-        std::this_thread::sleep_for(2s);
-
-        for (; i < 8; i++) {
-            monitor.add(i);
-        }
-
-        std::this_thread::sleep_for(2s);
-        monitor.stop();
-
-        return 0;
-
-    } catch (...) {
-        return -1;
-    }
+    };
 }
-
