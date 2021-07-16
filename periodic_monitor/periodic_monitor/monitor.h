@@ -28,7 +28,6 @@ namespace tsmoreland::periodic_monitor
     template <typename TKEY>
     class monitor 
     {
-        modern_win32::threading::manual_reset_event poll_event_{ false };
         modern_win32::threading::manual_reset_event stop_event_{ false };
         std::map<TKEY, std::chrono::time_point<std::chrono::system_clock>> items_{};
         std::shared_mutex item_lock_;
@@ -37,7 +36,6 @@ namespace tsmoreland::periodic_monitor
         bool shutdown_{};
         std::chrono::milliseconds const poll_period_{};
         std::chrono::milliseconds const life_time_{};
-        std::optional<std::chrono::milliseconds> const minimum_delay_{};
 
     public:
         using time_point = std::chrono::time_point<std::chrono::system_clock>;
@@ -86,9 +84,6 @@ namespace tsmoreland::periodic_monitor
             if (!stop_event_.set()) {
                 // ... log?
             }
-            if (!poll_event_.set()) {
-                // ... log?
-            }
 
             if (wait && worker_.value().joinable()) {
                 worker_.value().join();
@@ -101,23 +96,18 @@ namespace tsmoreland::periodic_monitor
         /// </summary>
         /// <param name="poll_period">period between polling/processoing the items</param>
         /// <param name="life_time">life time of items to be processed</param>
-        /// <param name="minimum_delay">optional minimum delay between attempts</param>
         /// <exception cref="std::invalid_argument">
         /// if any of the arguments are less than or equal to zero (in the case of minimum delay this check only applies if a value is provided)
         /// </exception>
-        explicit monitor(std::chrono::milliseconds const& poll_period, std::chrono::milliseconds const& life_time, std::optional<std::chrono::milliseconds> const& minimum_delay = std::nullopt)
+        explicit monitor(std::chrono::milliseconds const& poll_period, std::chrono::milliseconds const& life_time)
             : poll_period_{ poll_period }
             , life_time_{ life_time }
-            , minimum_delay_{ minimum_delay }
         {
             if (poll_period_ <= std::chrono::seconds(0)) {
                 throw std::invalid_argument("poll period must be greater than 0");
             }
             if (life_time_ <= std::chrono::seconds(0)) {
                 throw std::invalid_argument("life time period must be greater than 0");
-            }
-            if (minimum_delay_.has_value() && minimum_delay_.value() <= std::chrono::seconds(0)) {
-                throw std::invalid_argument("minimum delay must be greater than 0, it should be less than or equal to poll period");
             }
         }
         virtual ~monitor()
@@ -153,19 +143,14 @@ namespace tsmoreland::periodic_monitor
         void work_task() 
         {
             bool shutdown;
-            bool wait{ false };
 
             if (shutdown = get_shutdown(); shutdown) {
                 return;
             }
 
             while (!shutdown) {
-                if (wait_for_poll_period_or_minimum_delay_timed_out(wait)) {
-                    shutdown = get_shutdown();
-                    continue;
-                }
+                std::ignore = stop_event_.wait_one(poll_period_);
 
-            /*
                 // the following is repetitive but need after anything that may take some time, including
                 // entering a lock
                 if (shutdown = get_shutdown(); shutdown) {
@@ -188,34 +173,8 @@ namespace tsmoreland::periodic_monitor
                 if (shutdown = get_shutdown(); shutdown) {
                     return;
                 }
-
-                if (std::shared_lock lock{ item_lock_ };
-                    items_.empty()) {
-                    std::ignore = poll_event_.clear();
-                    wait = false;
-                } else {
-                    wait = true;
-                }
-            */
             }
 
-        }
-
-        [[nodiscard]]
-        bool wait_for_poll_period_or_minimum_delay_timed_out(bool const has_items) const
-        {
-            auto const period  = minimum_delay_.value_or(std::chrono::seconds(0)) < poll_period_
-                ? poll_period_
-                : minimum_delay_.value_or(std::chrono::seconds(0));
-
-            if (has_items) {
-                if (!poll_event_.wait_one(period)) {
-                    return true;
-                } 
-            } else if (minimum_delay_.has_value()) {
-                std::ignore = stop_event_.wait_one(minimum_delay_.value());
-            }
-            return false;
         }
 
         [[nodiscard]]
@@ -248,7 +207,7 @@ namespace tsmoreland::periodic_monitor
                     auto const& [key, value] = item;
                     return
                         std::chrono::system_clock::now() - value >= life_time_ ||
-                        std::find(begin(to_remove), end(to_remove), value) != end(to_remove);
+                        std::find(begin(to_remove), end(to_remove), key) != end(to_remove);
                 });
         }
 

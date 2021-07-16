@@ -16,35 +16,42 @@
 
 using tsmoreland::periodic_monitor::app::sample_monitor;
 
+#pragma warning(push)
+#pragma warning(disable : 4455)
 using std::literals::chrono_literals::operator ""ms;
 using std::literals::chrono_literals::operator ""s;
+#pragma warning(pop)
 
 
 int main()
 {
     try {
-        sample_monitor monitor{ 1500ms, 2s };
+        sample_monitor monitor{ 5s, 10s };
 
         int i;
         for (i = 0; i < 4; i++) {
             monitor.add(i);
         }
 
+        std::cout << "start monitoring\n";
         monitor.start();
 
-        std::this_thread::sleep_for(2s);
+        std::this_thread::sleep_for(5s);
 
+        std::cout << "add items\n";
         for (; i < 8; i++) {
             monitor.add(i);
         }
 
-        std::this_thread::sleep_for(2s);
+        std::this_thread::sleep_for(5s);
 
-        for (; i < 8; i++) {
+        std::cout << "add items\n";
+        for (; i < 12; i++) {
             monitor.add(i);
         }
 
-        std::this_thread::sleep_for(2s);
+        std::this_thread::sleep_for(10s);
+        std::cout << "stop monitoring\n";
         monitor.stop();
 
         return 0;

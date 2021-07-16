@@ -23,8 +23,8 @@ namespace tsmoreland::periodic_monitor::app
         using milliseconds = std::chrono::milliseconds;
         using optional_milliseconds = std::optional<std::chrono::milliseconds>;
     public:
-        explicit sample_monitor(milliseconds const& poll_period, milliseconds const& life_time, optional_milliseconds const& minimum_delay = std::nullopt)
-            : monitor<int>(poll_period, life_time, minimum_delay)
+        explicit sample_monitor(milliseconds const& poll_period, milliseconds const& life_time)
+            : monitor<int>(poll_period, life_time)
         {
         }
 
@@ -32,6 +32,12 @@ namespace tsmoreland::periodic_monitor::app
         std::vector<int> process_items(std::vector<int> const& items) final
         {
             std::vector<int> processed{};
+
+            std::cout << "to process: ";
+            for (auto const& item : items) {
+                std::cout << item << " ";
+            }
+            std::cout << "\n";
 
             for (auto const& item : items) {
                 if (item % 2 == 0) {
