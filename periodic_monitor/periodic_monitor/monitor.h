@@ -126,6 +126,11 @@ namespace tsmoreland::periodic_monitor
             if (life_time_ <= std::chrono::seconds(0)) {
                 throw std::invalid_argument("life time period must be greater than 0");
             }
+
+            if (life_time_ < poll_period_) {
+                throw std::invalid_argument("life time must be greater than poll period so it has a chance to be seen once");
+            }
+
         }
         virtual ~monitor()
         {
@@ -207,10 +212,9 @@ namespace tsmoreland::periodic_monitor
         }
 
         [[nodiscard]]
-        bool get_shutdown()
+        bool get_shutdown() const noexcept
         {
-            std::shared_lock lock{ start_stop_lock_ };
-            return shutdown_;
+            return shutdown_.load();
         }
         [[nodiscard]]
         std::vector<ITEM> get_active_items()
