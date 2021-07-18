@@ -130,6 +130,18 @@ namespace tsmoreland::periodic_monitor
         /// </returns>
         virtual std::vector<TKEY> process_items(std::vector<TKEY> const& items) = 0;
 
+        /// <summary>
+        /// Returns all items as a constant reference
+        /// </summary>
+        /// <returns>all items as a constant reference</returns>
+        /// <remarks>
+        /// primarily intended for debugging and testing
+        /// </remarks>
+        [[nodiscard]]
+        constexpr auto items() const noexcept -> std::map<TKEY, std::chrono::time_point<std::chrono::system_clock>> const&
+        {
+            return items_;
+        }
     private:
         void work() 
         {

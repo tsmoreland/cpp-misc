@@ -365,3 +365,4 @@ FodyWeavers.xsd
 
 *_i.c
 *_i.h
+/periodic_monitor/periodic_monitor.test/vcpkg_installed

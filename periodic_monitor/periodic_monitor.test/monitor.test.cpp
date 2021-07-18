@@ -11,10 +11,38 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-#include <iostream>
+#include "common.h"
+#include "test_monitor.h"
 
-int main()
+
+namespace tsmoreland::periodic_monitor::test
 {
-    std::cout << "Hello World!\n";
-}
+    BOOST_AUTO_TEST_CASE(add__adds_to_items__when_item_not_present)
+    {
+        std::vector<int> processed{};
 
+        auto processor = [&processed](std::vector<int> const&) {
+            return processed;
+        };
+        test_monitor monitor(processor);
+    
+        monitor.add(1);
+
+        BOOST_REQUIRE(monitor.contains(1));
+    }
+
+    BOOST_AUTO_TEST_CASE(add__does_not_add__when_item_already_present)
+    {
+        std::vector<int> processed{};
+
+        auto processor = [&processed](std::vector<int> const&) {
+            return processed;
+        };
+        test_monitor monitor(processor);
+    
+        monitor.add(1);
+        monitor.add(1);
+
+        BOOST_REQUIRE(monitor.count_of(1) == 1);
+    }
+}
