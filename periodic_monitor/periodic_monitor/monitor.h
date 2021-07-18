@@ -25,30 +25,52 @@
 
 namespace tsmoreland::periodic_monitor
 {
-    template <typename TKEY>
+    template <typename ITEM>
     class monitor 
     {
         modern_win32::threading::manual_reset_event stop_event_{ false };
-        std::map<TKEY, std::chrono::time_point<std::chrono::system_clock>> items_{};
+        std::map<ITEM, std::chrono::time_point<std::chrono::system_clock>> items_{};
         std::shared_mutex item_lock_;
         std::shared_mutex start_stop_lock_;
         std::optional<std::thread> worker_{};
-        bool shutdown_{};
+        std::atomic<bool> shutdown_{};
         std::chrono::milliseconds const poll_period_{};
         std::chrono::milliseconds const life_time_{};
 
     public:
-        using time_point = std::chrono::time_point<std::chrono::system_clock>;
-
-        void add(TKEY const& key) 
+        /// <summary>
+        /// Returns the poll period in milliseconds 
+        /// </summary>
+        /// <returns>the poll period in milliseconds</returns>
+        [[nodiscard]]
+        constexpr auto poll_period() const noexcept -> std::chrono::milliseconds
         {
-            if (std::shared_lock lock{start_stop_lock_};
-                shutdown_) {
+            return poll_period_;
+        }
+
+        /// <summary>
+        /// Returns the item life time in milliseconds
+        /// </summary>
+        /// <returns>item life time in milliseconds</returns>
+        [[nodiscard]]
+        constexpr auto life_time() const noexcept -> std::chrono::milliseconds
+        {
+            return life_time_;
+        }
+
+
+        /// <summary>
+        /// adds <paramref name="value"/> to the collection of items using current time as its time stamp.
+        /// </summary>
+        /// <param name="value">item to add</param>
+        void add(ITEM const& value) 
+        {
+            if (shutdown_.load()) {
                 return;
             }
 
             std::unique_lock lock{item_lock_};
-            std::ignore = items_.insert_or_assign(key, std::chrono::system_clock::now());
+            std::ignore = items_.insert_or_assign(value, std::chrono::system_clock::now());
         }
 
         /// <summary>
@@ -59,8 +81,7 @@ namespace tsmoreland::periodic_monitor
         /// </remarks>
         void start()
         {
-            if (std::shared_lock lock{start_stop_lock_};
-                shutdown_) {
+            if (shutdown_.load()) {
                 return;
             }
 
@@ -76,16 +97,12 @@ namespace tsmoreland::periodic_monitor
         /// <param name="wait"></param>
         void stop(bool wait = false)
         {
-            std::unique_lock lock{start_stop_lock_};
-            if (!worker_.has_value()) {
-                return;
-            }
             shutdown_ = true;
             if (!stop_event_.set()) {
                 // ... log?
             }
 
-            if (wait && worker_.value().joinable()) {
+            if (wait && worker_.has_value() && worker_.value().joinable()) {
                 worker_.value().join();
             }
 
@@ -128,7 +145,7 @@ namespace tsmoreland::periodic_monitor
         /// <returns>
         /// items that have been processed and which can be removed 
         /// </returns>
-        virtual std::vector<TKEY> process_items(std::vector<TKEY> const& items) = 0;
+        virtual std::vector<ITEM> process_items(std::vector<ITEM> const& items) = 0;
 
         /// <summary>
         /// Returns all items as a constant reference
@@ -138,7 +155,7 @@ namespace tsmoreland::periodic_monitor
         /// primarily intended for debugging and testing
         /// </remarks>
         [[nodiscard]]
-        constexpr auto items() const noexcept -> std::map<TKEY, std::chrono::time_point<std::chrono::system_clock>> const&
+        constexpr auto items() const noexcept -> std::map<ITEM, std::chrono::time_point<std::chrono::system_clock>> const&
         {
             return items_;
         }
@@ -165,24 +182,24 @@ namespace tsmoreland::periodic_monitor
 
                 // the following is repetitive but need after anything that may take some time, including
                 // entering a lock
-                if (shutdown = get_shutdown(); shutdown) {
+                if (shutdown_.load()) {
                     return;
                 }
 
                 auto active_items = std::move(get_active_items());
 
-                if (shutdown = get_shutdown(); shutdown) {
+                if (shutdown_.load()) {
                     return;
                 }
 
-                std::vector<TKEY> processed{ process_items(active_items) };
-                if (shutdown = get_shutdown(); shutdown) {
+                std::vector<ITEM> processed{ process_items(active_items) };
+                if (shutdown_.load()) {
                     return;
                 }
 
                 clear_expired_and_processed(processed);
 
-                if (shutdown = get_shutdown(); shutdown) {
+                if (shutdown_.load()) {
                     return;
                 }
             }
@@ -196,9 +213,9 @@ namespace tsmoreland::periodic_monitor
             return shutdown_;
         }
         [[nodiscard]]
-        std::vector<TKEY> get_active_items()
+        std::vector<ITEM> get_active_items()
         {
-            std::vector<TKEY> active_items{};
+            std::vector<ITEM> active_items{};
             std::shared_lock lock{ item_lock_ };
             if (items_.empty()) {
                 return active_items;
@@ -211,7 +228,7 @@ namespace tsmoreland::periodic_monitor
             }
             return active_items;
         }
-        void clear_expired_and_processed(std::vector<TKEY> const& to_remove)
+        void clear_expired_and_processed(std::vector<ITEM> const& to_remove)
         {
             std::unique_lock lock{ item_lock_ };
             std::erase_if(items_,
