@@ -23,8 +23,14 @@ namespace tsmoreland::periodic_monitor::test
         using milliseconds = std::chrono::milliseconds;
         TCALLBACK const& callback_;
     public:
+        explicit test_monitor(TCALLBACK const& callback, std::chrono::milliseconds const& poll_period, std::chrono::milliseconds const& life_time)
+            : monitor<int>(poll_period, life_time)
+            , callback_{ callback }
+        {
+        }
+
         explicit test_monitor(TCALLBACK const& callback)
-            : monitor<int>(milliseconds(100), milliseconds(200))
+            : monitor<int>(milliseconds(100), milliseconds(150))
             , callback_{ callback }
         {
         }
@@ -36,18 +42,19 @@ namespace tsmoreland::periodic_monitor::test
         }
 
         [[nodiscard]]
-        auto contains(int value) const -> bool
+        auto contains(int const value) const -> bool
         {
             return items().count(value) != 0;
         }
 
-        auto count_of(int const value) -> std::map<int, std::chrono::system_clock>::size_type
+        [[nodiscard]]
+        auto count_of(int const value) const -> std::map<int, std::chrono::system_clock>::size_type
         {
             return items().count(value);
         }
 
         [[nodiscard]]
-        auto get_expiry_or_nullopt(int value) const -> std::optional<std::chrono::time_point<std::chrono::system_clock>>
+        auto get_timestamp_or_nullopt(int value) const -> std::optional<std::chrono::time_point<std::chrono::system_clock>>
         {
             return contains(value)
                 ? std::optional(items().at(value))
