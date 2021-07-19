@@ -34,6 +34,7 @@ namespace tsmoreland::periodic_monitor
         std::shared_mutex start_stop_lock_;
         std::optional<std::thread> worker_{};
         std::atomic<bool> shutdown_{};
+        std::atomic<bool> is_running_{};
         std::chrono::milliseconds const poll_period_{};
         std::chrono::milliseconds const life_time_{};
 
@@ -57,7 +58,6 @@ namespace tsmoreland::periodic_monitor
         {
             return life_time_;
         }
-
 
         /// <summary>
         /// adds <paramref name="value"/> to the collection of items using current time as its time stamp.
@@ -164,14 +164,42 @@ namespace tsmoreland::periodic_monitor
         {
             return items_;
         }
+
+        /// <summary>
+        /// Returns true if the monitor has been started; otherwise, false
+        /// </summary>
+        /// <returns>true if the monitor has been started; otherwise, false</returns>
+        [[nodiscard]]
+        constexpr auto is_running() const noexcept -> bool
+        {
+            return is_running_;
+        }
     private:
         void work() 
         {
+            class in_scope final
+            {
+                std::atomic<bool>& value_;
+            public:
+                explicit in_scope(std::atomic<bool>& value)
+                    : value_{ value }
+                {
+                    value_ = true;
+                }
+                ~in_scope()
+                {
+                    value_ = false;
+                }
+            };
+
+            in_scope running{ is_running_ };
+
             try {
                 work_task();
             } catch (std::exception const&) {
                 // ... log maybe?
             }
+            is_running_ = false;
 
         }
         void work_task() 

@@ -15,6 +15,8 @@
 #include "test_monitor.h"
 #include <stdexcept>
 
+#pragma warning(disable : 4455)
+using std::literals::chrono_literals::operator ""ms;
 
 namespace tsmoreland::periodic_monitor::test
 {
@@ -84,8 +86,8 @@ namespace tsmoreland::periodic_monitor::test
         monitor.add(1);
         auto const second_timestamp = monitor.get_timestamp_or_nullopt(1);
 
-        BOOST_REQUIRE(first_timestamp.has_value(), "expected value for timestamp");
-        BOOST_REQUIRE(second_timestamp.has_value(), "expected value for timestamp");
+        BOOST_REQUIRE(first_timestamp.has_value());
+        BOOST_REQUIRE(second_timestamp.has_value());
 
         BOOST_CHECK(first_timestamp.value() < second_timestamp.value());
     }
@@ -102,6 +104,37 @@ namespace tsmoreland::periodic_monitor::test
         monitor.add(1);
 
         BOOST_CHECK(!monitor.contains(1));
+    }
+
+    BOOST_AUTO_TEST_CASE(start__does_not_call_process_items__before_poll_period_elsapsed)
+    {
+        bool invoked{ false };
+
+        auto processor = [&invoked](std::vector<int> const&) {
+            invoked = true;
+            return std::vector<int>();
+        };
+        test_monitor monitor(processor);
+
+        monitor.start();
+
+        BOOST_CHECK(invoked == false);
+    }
+
+    BOOST_AUTO_TEST_CASE(start__calls_process_items__after_poll_period_elsapsed)
+    {
+        bool invoked{ false };
+
+        auto processor = [&invoked](std::vector<int> const&) {
+            invoked = true;
+            return std::vector<int>();
+        };
+        test_monitor monitor(processor);
+
+        monitor.start();
+        std::this_thread::sleep_for(monitor.poll_period() + 100ms /* time to cover the lock */);
+
+        BOOST_CHECK(invoked == true);
     }
 
     BOOST_AUTO_TEST_CASE(start__background_worker_removes_items__when_expired)
