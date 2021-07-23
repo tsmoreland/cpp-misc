@@ -16,3 +16,4 @@
 
 #define BOOST_TEST_MODULE periodic_monitor_tests  // NOLINT(cppcoreguidelines-macro-usage)
 #include <boost/test/unit_test.hpp>
+#include <boost/test/data/test_case.hpp>

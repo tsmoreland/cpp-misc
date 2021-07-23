@@ -213,14 +213,19 @@ namespace tsmoreland::periodic_monitor::test
     }
 
     // TODO: change these to data driven passing wait = true, false
-    BOOST_AUTO_TEST_CASE(stop__prevents_start_from_running__when_start_not_called_first_and_wait_is_true)
+    namespace
+    {
+        bool stop_wait_dataset[] = { true, false };
+    }
+
+    BOOST_DATA_TEST_CASE(stop__prevents_start_from_running__when_start_not_called_first, stop_wait_dataset, wait_value)
     {
         auto processor = [](std::vector<int> const&) {
             return std::vector<int>();
         };
         test_monitor monitor(processor, 10ms, 200ms);
 
-        monitor.stop(true);
+        monitor.stop(wait_value);
         monitor.start();
 
         std::this_thread::sleep_for(100ms);
@@ -228,18 +233,4 @@ namespace tsmoreland::periodic_monitor::test
         BOOST_CHECK(!monitor.get_is_running());
     }
 
-    BOOST_AUTO_TEST_CASE(stop__prevents_start_from_running__when_start_not_called_first_and_wait_is_false)
-    {
-        auto processor = [](std::vector<int> const&) {
-            return std::vector<int>();
-        };
-        test_monitor monitor(processor, 10ms, 200ms);
-
-        monitor.stop(false);
-        monitor.start();
-
-        std::this_thread::sleep_for(100ms);
-
-        BOOST_CHECK(!monitor.get_is_running());
-    }
 }
