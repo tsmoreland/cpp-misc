@@ -65,7 +65,7 @@ namespace tsmoreland::periodic_monitor
         /// <param name="value">item to add</param>
         void add(ITEM const& value) 
         {
-            if (shutdown_.load()) {
+            if (shutdown_) {
                 return;
             }
 
@@ -81,7 +81,7 @@ namespace tsmoreland::periodic_monitor
         /// </remarks>
         void start()
         {
-            if (shutdown_.load()) {
+            if (shutdown_) {
                 return;
             }
 
@@ -190,6 +190,10 @@ namespace tsmoreland::periodic_monitor
                 {
                     value_ = false;
                 }
+                in_scope(in_scope const&) = delete;
+                in_scope(in_scope&&) noexcept = delete;
+                in_scope& operator=(in_scope const&) = delete;
+                in_scope& operator=(in_scope&&) noexcept = delete;
             };
 
             in_scope running{ is_running_ };
@@ -215,24 +219,24 @@ namespace tsmoreland::periodic_monitor
 
                 // the following is repetitive but need after anything that may take some time, including
                 // entering a lock
-                if (shutdown_.load()) {
+                if (shutdown_) {
                     return;
                 }
 
                 auto active_items = std::move(get_active_items());
 
-                if (shutdown_.load()) {
+                if (shutdown_) {
                     return;
                 }
 
                 std::vector<ITEM> processed{ process_items(active_items) };
-                if (shutdown_.load()) {
+                if (shutdown_) {
                     return;
                 }
 
                 clear_expired_and_processed(processed);
 
-                if (shutdown_.load()) {
+                if (shutdown_) {
                     return;
                 }
             }
@@ -242,7 +246,7 @@ namespace tsmoreland::periodic_monitor
         [[nodiscard]]
         bool get_shutdown() const noexcept
         {
-            return shutdown_.load();
+            return shutdown_;
         }
         [[nodiscard]]
         std::vector<ITEM> get_active_items()

@@ -14,9 +14,13 @@
 #include "common.h"
 #include "test_monitor.h"
 #include <stdexcept>
+#include <modern_win32/threading/event.h>
 
 #pragma warning(disable : 4455)
 using std::literals::chrono_literals::operator ""ms;
+using std::literals::chrono_literals::operator ""s;
+
+using modern_win32::threading::manual_reset_event;
 
 namespace tsmoreland::periodic_monitor::test
 {
@@ -156,4 +160,55 @@ namespace tsmoreland::periodic_monitor::test
         BOOST_CHECK(!monitor.contains(1));
     }
 
+    BOOST_AUTO_TEST_CASE(stop__does_not_wait__when_wait_is_false)
+    {
+        std::vector<int> processed{};
+        manual_reset_event wait_for_process{ false };
+        manual_reset_event wait_for_stop{ false };
+        
+
+        auto processor = [&processed, &wait_for_process, &wait_for_stop](std::vector<int> const&) {
+            std::ignore = wait_for_process.set();
+            std::ignore = wait_for_stop.wait_one(2s);
+            return processed;
+        };
+
+        test_monitor monitor(processor, 50ms, 500ms);
+
+        monitor.start();
+
+        BOOST_REQUIRE(wait_for_process.wait_one(2s));
+        BOOST_REQUIRE(monitor.get_is_running());
+        monitor.stop();
+        bool const is_running = monitor.get_is_running();
+        std::ignore = wait_for_stop.set();
+
+        BOOST_CHECK(is_running);
+    }
+
+    BOOST_AUTO_TEST_CASE(stop__does_wait__when_wait_is_true)
+    {
+        std::vector<int> processed{};
+        manual_reset_event wait_for_process{ false };
+        manual_reset_event wait_for_stop{ false };
+        
+
+        auto processor = [&processed, &wait_for_process, &wait_for_stop](std::vector<int> const&) {
+            std::ignore = wait_for_process.set();
+            BOOST_REQUIRE(!wait_for_stop.wait_one(200ms));
+            return processed;
+        };
+
+        test_monitor monitor(processor, 10ms, 500ms);
+
+        monitor.start();
+
+        BOOST_REQUIRE(wait_for_process.wait_one(2s));
+        BOOST_REQUIRE(monitor.get_is_running());
+        monitor.stop(true);
+        bool const is_running = monitor.get_is_running();
+        std::ignore = wait_for_stop.set(); // doing this here means the wait in processor should time out
+
+        BOOST_CHECK(!is_running);
+    }
 }
