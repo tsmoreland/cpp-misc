@@ -212,7 +212,6 @@ namespace tsmoreland::periodic_monitor::test
         BOOST_CHECK(!is_running);
     }
 
-    // TODO: change these to data driven passing wait = true, false
     namespace
     {
         bool stop_wait_dataset[] = { true, false };
