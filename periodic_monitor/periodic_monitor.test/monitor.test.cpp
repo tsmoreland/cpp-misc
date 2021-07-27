@@ -29,7 +29,9 @@ namespace tsmoreland::periodic_monitor::test
         auto processor = [](std::vector<int> const&) {
             return std::vector<int>{};
         };
-        BOOST_CHECK_THROW(test_monitor monitor(processor, std::chrono::milliseconds(-100), std::chrono::milliseconds(200)), std::invalid_argument);
+        auto handler = [](std::vector<int> const&) {};
+
+        BOOST_CHECK_THROW(test_monitor monitor(processor, handler, std::chrono::milliseconds(-100), std::chrono::milliseconds(200)), std::invalid_argument);
     }
     
     BOOST_AUTO_TEST_CASE(ctor__throws_invalid_argument__when_life_time_less_than_or_equal_to_zero)
@@ -37,7 +39,8 @@ namespace tsmoreland::periodic_monitor::test
         auto processor = [](std::vector<int> const&) {
             return std::vector<int>{};
         };
-        BOOST_CHECK_THROW(test_monitor monitor(processor, std::chrono::milliseconds(100), std::chrono::milliseconds(-200)), std::invalid_argument);
+        auto handler = [](std::vector<int> const&) {};
+        BOOST_CHECK_THROW(test_monitor monitor(processor, handler, std::chrono::milliseconds(100), std::chrono::milliseconds(-200)), std::invalid_argument);
     }
 
     BOOST_AUTO_TEST_CASE(ctor__throws_invalid_argument__when_life_time_less_poll_period)
@@ -45,7 +48,8 @@ namespace tsmoreland::periodic_monitor::test
         auto processor = [](std::vector<int> const&) {
             return std::vector<int>{};
         };
-        BOOST_CHECK_THROW(test_monitor monitor(processor, std::chrono::milliseconds(200), std::chrono::milliseconds(100)), std::invalid_argument);
+        auto handler = [](std::vector<int> const&) {};
+        BOOST_CHECK_THROW(test_monitor monitor(processor, handler, std::chrono::milliseconds(200), std::chrono::milliseconds(100)), std::invalid_argument);
     }
 
     BOOST_AUTO_TEST_CASE(add__adds_to_items__when_item_not_present)
@@ -54,7 +58,8 @@ namespace tsmoreland::periodic_monitor::test
         auto processor = [&processed](std::vector<int> const&) {
             return processed;
         };
-        test_monitor monitor(processor);
+        auto handler = [](std::vector<int> const&) {};
+        test_monitor monitor(processor, handler);
     
         monitor.add(1);
 
@@ -68,7 +73,8 @@ namespace tsmoreland::periodic_monitor::test
         auto processor = [&processed](std::vector<int> const&) {
             return processed;
         };
-        test_monitor monitor(processor);
+        auto handler = [](std::vector<int> const&) {};
+        test_monitor monitor(processor, handler);
     
         monitor.add(1);
         monitor.add(1);
@@ -83,7 +89,8 @@ namespace tsmoreland::periodic_monitor::test
         auto processor = [&processed](std::vector<int> const&) {
             return processed;
         };
-        test_monitor monitor(processor);
+        auto handler = [](std::vector<int> const&) {};
+        test_monitor monitor(processor, handler);
     
         monitor.add(1);
         auto const first_timestamp = monitor.get_timestamp_or_nullopt(1);
@@ -102,7 +109,8 @@ namespace tsmoreland::periodic_monitor::test
         auto processor = [&processed](std::vector<int> const&) {
             return processed;
         };
-        test_monitor monitor(processor);
+        auto handler = [](std::vector<int> const&) {};
+        test_monitor monitor(processor, handler);
 
         monitor.stop();
         monitor.add(1);
@@ -118,7 +126,8 @@ namespace tsmoreland::periodic_monitor::test
             invoked = true;
             return std::vector<int>();
         };
-        test_monitor monitor(processor);
+        auto handler = [](std::vector<int> const&) {};
+        test_monitor monitor(processor, handler);
 
         monitor.start();
 
@@ -133,7 +142,8 @@ namespace tsmoreland::periodic_monitor::test
             invoked = true;
             return std::vector<int>();
         };
-        test_monitor monitor(processor);
+        auto handler = [](std::vector<int> const&) {};
+        test_monitor monitor(processor, handler);
 
         monitor.start();
         std::this_thread::sleep_for(monitor.poll_period() + 100ms /* time to cover the lock */);
@@ -148,7 +158,8 @@ namespace tsmoreland::periodic_monitor::test
         auto processor = [&processed](std::vector<int> const&) {
             return processed;
         };
-        test_monitor monitor(processor);
+        auto handler = [](std::vector<int> const&) {};
+        test_monitor monitor(processor, handler);
 
         monitor.add(1);
         monitor.start();
@@ -172,8 +183,9 @@ namespace tsmoreland::periodic_monitor::test
             std::ignore = wait_for_stop.wait_one(2s);
             return processed;
         };
+        auto handler = [](std::vector<int> const&) {};
 
-        test_monitor monitor(processor, 50ms, 500ms);
+        test_monitor monitor(processor, handler, 50ms, 500ms);
 
         monitor.start();
 
@@ -192,14 +204,14 @@ namespace tsmoreland::periodic_monitor::test
         manual_reset_event wait_for_process{ false };
         manual_reset_event wait_for_stop{ false };
         
-
         auto processor = [&processed, &wait_for_process, &wait_for_stop](std::vector<int> const&) {
             std::ignore = wait_for_process.set();
             BOOST_REQUIRE(!wait_for_stop.wait_one(200ms));
             return processed;
         };
+        auto handler = [](std::vector<int> const&) {};
 
-        test_monitor monitor(processor, 10ms, 500ms);
+        test_monitor monitor(processor, handler, 10ms, 500ms);
 
         monitor.start();
 
@@ -222,7 +234,8 @@ namespace tsmoreland::periodic_monitor::test
         auto processor = [](std::vector<int> const&) {
             return std::vector<int>();
         };
-        test_monitor monitor(processor, 10ms, 200ms);
+        auto handler = [](std::vector<int> const&) {};
+        test_monitor monitor(processor, handler, 10ms, 200ms);
 
         monitor.stop(wait_value);
         monitor.start();

@@ -47,5 +47,9 @@ namespace tsmoreland::periodic_monitor::app
             }
             return processed;
         }
+
+        void notify_expired(std::vector<int> const& items) override
+        {
+        }
     };
 }

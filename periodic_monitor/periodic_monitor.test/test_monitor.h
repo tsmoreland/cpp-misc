@@ -17,21 +17,24 @@
 
 namespace tsmoreland::periodic_monitor::test
 {
-    template <typename TCALLBACK>
+    template <typename TCALLBACK, typename TNOTIFICATION>
     class test_monitor : public monitor<int>
     {
         using milliseconds = std::chrono::milliseconds;
         TCALLBACK const& callback_;
+        TNOTIFICATION const& handler_;
     public:
-        explicit test_monitor(TCALLBACK const& callback, std::chrono::milliseconds const& poll_period, std::chrono::milliseconds const& life_time)
+        explicit test_monitor(TCALLBACK const& callback, TNOTIFICATION const& handler, std::chrono::milliseconds const& poll_period, std::chrono::milliseconds const& life_time)
             : monitor<int>(poll_period, life_time)
             , callback_{ callback }
+            , handler_{ handler }
         {
         }
 
-        explicit test_monitor(TCALLBACK const& callback)
+        explicit test_monitor(TCALLBACK const& callback, TNOTIFICATION const& handler)
             : monitor<int>(milliseconds(100), milliseconds(150))
             , callback_{ callback }
+            , handler_{ handler }
         {
         }
 
@@ -71,6 +74,11 @@ namespace tsmoreland::periodic_monitor::test
         std::vector<int> process_items(std::vector<int> const& items) override
         {
             return callback_(items);
+        }
+
+        void notify_expired(std::vector<int> const& items) override
+        {
+            handler_(items);
         }
     };
 

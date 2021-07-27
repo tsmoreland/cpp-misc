@@ -150,7 +150,14 @@ namespace tsmoreland::periodic_monitor
         /// <returns>
         /// items that have been processed and which can be removed 
         /// </returns>
+        [[nodiscard]]
         virtual std::vector<ITEM> process_items(std::vector<ITEM> const& items) = 0;
+
+        /// <summary>
+        /// called when expired items are removed to allow any
+        /// </summary>
+        /// <param name="items"></param>
+        virtual void notify_expired(std::vector<ITEM> const& items) = 0;
 
         /// <summary>
         /// Returns all items as a constant reference
