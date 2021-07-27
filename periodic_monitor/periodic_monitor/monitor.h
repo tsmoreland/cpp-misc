@@ -39,6 +39,8 @@ namespace tsmoreland::periodic_monitor
         std::chrono::milliseconds const life_time_{};
 
     public:
+        static_assert(std::is_trivial_v<ITEM>, "item should be trivial to construct/copy/etc...");
+
         /// <summary>
         /// Returns the poll period in milliseconds 
         /// </summary>
@@ -273,14 +275,29 @@ namespace tsmoreland::periodic_monitor
         }
         void clear_expired_and_processed(std::vector<ITEM> const& to_remove)
         {
-            std::unique_lock lock{ item_lock_ };
-            std::erase_if(items_,
-                [&to_remove, this](auto const& item) {
-                    auto const& [key, value] = item;
-                    return
-                        std::chrono::system_clock::now() - value >= life_time_ ||
-                        std::find(begin(to_remove), end(to_remove), key) != end(to_remove);
-                });
+            std::vector<ITEM> expired{};
+
+            {
+                std::unique_lock lock{ item_lock_ }; 
+
+                for (auto const& item : items_) {
+                    if (auto const& [key, value] = item;
+                        std::chrono::system_clock::now() - value >= life_time_ &&
+                        std::find(begin(to_remove), end(to_remove), key) == end(to_remove)) {
+                        expired.push_back(key);
+                    }
+                }
+                std::erase_if(items_,
+                    [&to_remove, this](auto const& item) {
+                        auto const& [key, value] = item;
+                        return
+                            std::find(begin(to_remove), end(to_remove), key) != end(to_remove) ||
+                            std::chrono::system_clock::now() - value >= life_time_;
+                    });
+            }
+
+            notify_expired(expired);
+
         }
 
     };
