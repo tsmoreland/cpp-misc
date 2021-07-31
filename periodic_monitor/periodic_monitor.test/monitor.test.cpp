@@ -245,4 +245,41 @@ namespace tsmoreland::periodic_monitor::test
         BOOST_CHECK(!monitor.get_is_running());
     }
 
+    BOOST_AUTO_TEST_CASE(is_running__returns_false__before_start_is_called)
+    {
+        auto processor = [](std::vector<int> const&) {
+            return std::vector<int>();
+        };
+        auto handler = [](std::vector<int> const&) {};
+        test_monitor const monitor(processor, handler);
+
+        BOOST_CHECK(!monitor.get_is_running());
+    }
+    BOOST_AUTO_TEST_CASE(is_running__returns_true__after_start_is_called_and_before_stop_is_called)
+    {
+        auto processor = [](std::vector<int> const&) {
+            return std::vector<int>();
+        };
+        auto handler = [](std::vector<int> const&) {};
+        test_monitor monitor(processor, handler);
+
+        monitor.start();
+
+        BOOST_CHECK(monitor.get_is_running());
+    }
+
+    BOOST_AUTO_TEST_CASE(is_running__returns_true__after_stop_is_called)
+    {
+        auto processor = [](std::vector<int> const&) {
+            return std::vector<int>();
+        };
+        auto handler = [](std::vector<int> const&) {};
+        test_monitor monitor(processor, handler);
+
+        monitor.start();
+        monitor.stop(true);
+
+        BOOST_CHECK(!monitor.get_is_running());
+    }
+
 }
