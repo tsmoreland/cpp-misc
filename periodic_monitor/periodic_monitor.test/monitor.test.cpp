@@ -190,9 +190,9 @@ namespace tsmoreland::periodic_monitor::test
         monitor.start();
 
         BOOST_REQUIRE(wait_for_process.wait_one(2s));
-        BOOST_REQUIRE(monitor.get_is_running());
+        BOOST_REQUIRE(monitor.is_running());
         monitor.stop();
-        bool const is_running = monitor.get_is_running();
+        bool const is_running = monitor.is_running();
         std::ignore = wait_for_stop.set();
 
         BOOST_CHECK(is_running);
@@ -216,9 +216,9 @@ namespace tsmoreland::periodic_monitor::test
         monitor.start();
 
         BOOST_REQUIRE(wait_for_process.wait_one(2s));
-        BOOST_REQUIRE(monitor.get_is_running());
+        BOOST_REQUIRE(monitor.is_running());
         monitor.stop(true);
-        bool const is_running = monitor.get_is_running();
+        bool const is_running = monitor.is_running();
         std::ignore = wait_for_stop.set(); // doing this here means the wait in processor should time out
 
         BOOST_CHECK(!is_running);
@@ -242,7 +242,7 @@ namespace tsmoreland::periodic_monitor::test
 
         std::this_thread::sleep_for(100ms);
 
-        BOOST_CHECK(!monitor.get_is_running());
+        BOOST_CHECK(!monitor.is_running());
     }
 
     BOOST_AUTO_TEST_CASE(is_running__returns_false__before_start_is_called)
@@ -253,7 +253,7 @@ namespace tsmoreland::periodic_monitor::test
         auto handler = [](std::vector<int> const&) {};
         test_monitor const monitor(processor, handler);
 
-        BOOST_CHECK(!monitor.get_is_running());
+        BOOST_CHECK(!monitor.is_running());
     }
     BOOST_AUTO_TEST_CASE(is_running__returns_true__after_start_is_called_and_before_stop_is_called)
     {
@@ -265,7 +265,7 @@ namespace tsmoreland::periodic_monitor::test
 
         monitor.start();
 
-        BOOST_CHECK(monitor.get_is_running());
+        BOOST_CHECK(monitor.is_running());
     }
 
     BOOST_AUTO_TEST_CASE(is_running__returns_true__after_stop_is_called)
@@ -279,7 +279,7 @@ namespace tsmoreland::periodic_monitor::test
         monitor.start();
         monitor.stop(true);
 
-        BOOST_CHECK(!monitor.get_is_running());
+        BOOST_CHECK(!monitor.is_running());
     }
 
 }

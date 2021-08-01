@@ -138,6 +138,17 @@ namespace tsmoreland::periodic_monitor
         {
             stop(true);
         }
+
+        /// <summary>
+        /// Returns true if the monitor has been started; otherwise, false
+        /// </summary>
+        /// <returns>true if the monitor has been started; otherwise, false</returns>
+        [[nodiscard]]
+        constexpr auto is_running() const noexcept -> bool
+        {
+            return is_running_;
+        }
+
         monitor(monitor const&) = delete;
         monitor(monitor &&) noexcept = delete;
         monitor& operator=(monitor const&) = delete;
@@ -174,15 +185,6 @@ namespace tsmoreland::periodic_monitor
             return items_;
         }
 
-        /// <summary>
-        /// Returns true if the monitor has been started; otherwise, false
-        /// </summary>
-        /// <returns>true if the monitor has been started; otherwise, false</returns>
-        [[nodiscard]]
-        constexpr auto is_running() const noexcept -> bool
-        {
-            return is_running_;
-        }
     private:
         void work() 
         {

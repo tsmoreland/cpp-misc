@@ -38,11 +38,6 @@ namespace tsmoreland::periodic_monitor::test
         {
         }
 
-        constexpr auto get_is_running() const noexcept -> bool
-        {
-            return is_running();
-        }
-
         [[nodiscard]]
         constexpr auto get_items() const noexcept -> std::map<int, std::chrono::time_point<std::chrono::system_clock>> const&
         {
