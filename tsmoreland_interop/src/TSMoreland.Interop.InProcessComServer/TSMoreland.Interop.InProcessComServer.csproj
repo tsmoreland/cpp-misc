@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>SimpleInProcessComServer</AssemblyName>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableComHosting>true</EnableComHosting>
+
+    <!-- build using /p:RegFree=true -->
+    <EnableRegFreeCom Condition="'$(RegFree)' == 'True'">True</EnableRegFreeCom>
+  </PropertyGroup>
+
+  <!--
+    .NET Core 3.x and above won't include TLB information, it can be included
+    using the following but for this to work we'd need an IDL and midl compiler to
+    generate this, then it'd be on us to ensure the IDL matches what we have here
+
+    Alternative is to manually write the header files for consumption within C/C++ or
+    other such language (aside from C# which would just access it directly)
+  <ItemGroup>
+    <ComHostTypeLibrary Include="SimpleInProcessComServer.tlb" Id="1" />
+  </ItemGroup>
+  -->
+
+</Project>
