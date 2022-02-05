@@ -11,6 +11,11 @@
     <EnableRegFreeCom Condition="'$(RegFree)' == 'True'">True</EnableRegFreeCom>
   </PropertyGroup>
 
+  <!-- manual registration of the *comhost* assembly is required, special note it's comhost not the assembly we build that needs registered -->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(RegFree)' != 'True'">
+    <Exec Command="regsvr32.exe /s $(ProjectDir)bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).comhost.dll" />
+  </Target>
+
   <!--
     .NET Core 3.x and above won't include TLB information, it can be included
     using the following but for this to work we'd need an IDL and midl compiler to
