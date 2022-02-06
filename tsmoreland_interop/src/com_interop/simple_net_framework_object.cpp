@@ -12,7 +12,7 @@
 // 
 
 #include "common.h"
-#include "in_process_com_server_net_framework.h"
+#include "simple_net_framework_object.h"
 #include "com_exception.h"
 
 using tsmoreland::interop::csharp_interop::com_exception;
@@ -22,7 +22,7 @@ namespace tsmoreland::interop::in_process_com_server::net_framework {
 
     auto create_simple_net_framework_object() -> TSMoreland_Interop_InProcessComServer_NetFramework::ISimpleNetFrameworkObjectPtr {
         TSMoreland_Interop_InProcessComServer_NetFramework::ISimpleNetFrameworkObjectPtr object{};
-        if (HRESULT const hr = object.CreateInstance(__uuidof(TSMoreland_Interop_InProcessComServer_NetFramework::SimpleNetFrameworkObject)); 
+        if (HRESULT const hr = object.CreateInstance(__uuidof(TSMoreland_Interop_InProcessComServer_NetFramework::SimpleNetFrameworkObject));   // NOLINT(clang-diagnostic-language-extension-token)
             FAILED(hr)) {
             throw com_exception(hr);
         }
@@ -30,7 +30,6 @@ namespace tsmoreland::interop::in_process_com_server::net_framework {
     }
 
     auto simple_net_framework_object_facade::name() const -> std::wstring {
-
         BSTR value{};
         if (HRESULT const hr = object_->get_Name(&value); FAILED(hr)) {
             throw com_exception(hr);

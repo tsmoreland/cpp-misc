@@ -29,7 +29,7 @@ namespace tsmoreland::interop::in_process_com_server::net_framework {
         -> TSMoreland_Interop_InProcessComServer_NetFramework::ISimpleNetFrameworkObjectPtr;
 
     class simple_net_framework_object_facade final {
-        TSMoreland_Interop_InProcessComServer_NetFramework::ISimpleNetFrameworkObjectPtr object_{create_simple_net_framework_object()};
+        TSMoreland_Interop_InProcessComServer_NetFramework::ISimpleNetFrameworkObjectPtr object_{create_simple_net_framework_object()};  // NOLINT(clang-diagnostic-unused-private-field)
     public:
         constexpr explicit simple_net_framework_object_facade() = default;
         

@@ -84,15 +84,16 @@
   <ItemGroup>
     <ClCompile Include="com_environment.cpp" />
     <ClCompile Include="com_exception.cpp" />
-    <ClCompile Include="csharp_interop.cpp" />
-    <ClCompile Include="in_process_com_server_net_framework.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="simple_net_framework_object.cpp" />
+    <ClCompile Include="simple_object.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h" />
     <ClInclude Include="com_environment.h" />
     <ClInclude Include="com_exception.h" />
-    <ClInclude Include="in_process_com_server_net_framework.h" />
-    <ClInclude Include="in_process_com_server.h" />
+    <ClInclude Include="simple_net_framework_object.h" />
+    <ClInclude Include="simple_object.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TSMoreland.Interop.InProcessComServer.NetFramework\TSMoreland.Interop.InProcessComServer.NetFramework.csproj">

@@ -18,7 +18,7 @@
     <ClCompile Include="csharp_interop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="in_process_com_server_net_framework.cpp">
+    <ClCompile Include="simple_net_framework_object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="com_environment.cpp">
@@ -27,12 +27,15 @@
     <ClCompile Include="com_exception.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="simple_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="in_process_com_server.h">
+    <ClInclude Include="simple_object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="in_process_com_server_net_framework.h">
+    <ClInclude Include="simple_net_framework_object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="com_environment.h">
