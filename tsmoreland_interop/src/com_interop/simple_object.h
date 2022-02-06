@@ -22,26 +22,32 @@
 namespace tsmoreland::interop::in_process_com_server {
 
     struct __declspec(uuid("B207098E-7400-4D5B-858E-98472004FA83")) simple_object_interface;
-    using simple_object_interface_ptr = _com_ptr_t<_com_IIID<simple_object_interface, &__uuidof(simple_object_interface)> >;  // NOLINT(clang-diagnostic-language-extension-token)
+    using simple_object_interface_ptr = _com_ptr_t<_com_IIID<simple_object_interface, &__uuidof(simple_object_interface)>>; // NOLINT(clang-diagnostic-language-extension-token)
 
+    /**
+     * \brief COM interface for NET6 simple object.
+     * \details Order of methods is important, it must match the order defined
+     *          in the COM object as do the parameter types, names however can
+     *          be different
+     */
     // ReSharper disable once CppPolymorphicClassWithNonVirtualPublicDestructor
     struct __declspec(uuid("B207098E-7400-4D5B-858E-98472004FA83"))
-    simple_object_interface : IUnknown {  // NOLINT(clang-diagnostic-non-virtual-dtor)
-        virtual HRESULT __stdcall get_name(BSTR * return_value) = 0;
-        virtual HRESULT __stdcall put_name (BSTR value) = 0;
-        virtual HRESULT __stdcall get_value (long * return_value) = 0;
-        virtual HRESULT __stdcall put_value (long value) = 0;
-        virtual HRESULT __stdcall calculate_area_of_a_circle (double radius, double * return_value) = 0;
+    simple_object_interface : IUnknown { // NOLINT(clang-diagnostic-non-virtual-dtor)
+        virtual HRESULT __stdcall get_name(BSTR* return_value) = 0;
+        virtual HRESULT __stdcall put_name(BSTR value) = 0;
+        virtual HRESULT __stdcall get_value(long* return_value) = 0;
+        virtual HRESULT __stdcall put_value(long value) = 0;
+        virtual HRESULT __stdcall calculate_area_of_a_circle(double radius, double* return_value) = 0;
     };
 
-    [[nodiscard]]
-    auto create_simple_object() -> simple_object_interface_ptr;
+    [[nodiscard]] auto create_simple_object() -> simple_object_interface_ptr;
 
     class simple_object_facade final {
-         simple_object_interface_ptr object_{create_simple_object()};
+        simple_object_interface_ptr object_{create_simple_object()};
+
     public:
         constexpr explicit simple_object_facade() = default;
-        
+
         [[nodiscard]]
         auto name() const -> std::wstring;
 
@@ -56,5 +62,5 @@ namespace tsmoreland::interop::in_process_com_server {
         auto calculate_area_of_circle(double const radius) const -> double;
     };
 
-    
-}
+
+} // namespace tsmoreland::interop::in_process_com_server
