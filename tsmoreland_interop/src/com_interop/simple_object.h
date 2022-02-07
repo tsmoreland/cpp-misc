@@ -1,5 +1,5 @@
 //
-// Copyright © 2022 Terry Moreland
+// Copyright Â© 2022 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
 // rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
@@ -40,7 +40,8 @@ namespace tsmoreland::interop::in_process_com_server {
         virtual HRESULT __stdcall calculate_area_of_a_circle(double radius, double* return_value) = 0;
     };
 
-    [[nodiscard]] auto create_simple_object() -> simple_object_interface_ptr;
+    [[nodiscard]] 
+    auto create_simple_object() -> simple_object_interface_ptr;
 
     class simple_object_facade final {
         simple_object_interface_ptr object_{create_simple_object()};
