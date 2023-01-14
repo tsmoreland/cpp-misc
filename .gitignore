@@ -403,3 +403,6 @@ MigrationBackup/
 .dccache
 
 build/
+
+.cmake/
+/cpu-info-exe/cmake-build-debug

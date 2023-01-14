@@ -54,13 +54,10 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="..\packages\modern_win32_vc143.1.0.1\build\native\modern_win32_vc143.targets" Condition="Exists('..\packages\modern_win32_vc143.1.0.1\build\native\modern_win32_vc143.targets')" />
   </ImportGroup>
-  <ImportGroup Label="Shared" Condition=" '$(Configuration)'=='debug' ">
-    <Import Project="..\packages\modern_win32_debug_vc143.1.0.0\build\native\modern_win32_debug_vc143.targets" Condition="Exists('..\packages\modern_win32_debug_vc143.1.0.0\build\native\modern_win32_debug_vc143.targets')" />
-  </ImportGroup>
-  <ImportGroup Label="Shared" Condition=" '$(Configuration)'!='debug' ">
-    <Import Project="..\packages\modern_win32_vc143.1.0.0\build\native\modern_win32_vc143.targets" Condition="Exists('..\packages\modern_win32_vc143.1.0.0\build\native\modern_win32_vc143.targets')" />
-  </ImportGroup>
+  <ImportGroup Label="Shared" Condition=" '$(Configuration)'=='debug' " />
+  <ImportGroup Label="Shared" Condition=" '$(Configuration)'!='debug' " />
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -143,6 +140,6 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\modern_win32_vc143.1.0.0\build\native\modern_win32_vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\modern_win32_vc143.1.0.0\build\native\modern_win32_vc143.targets'))" />
+    <Error Condition="!Exists('..\packages\modern_win32_vc143.1.0.1\build\native\modern_win32_vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\modern_win32_vc143.1.0.1\build\native\modern_win32_vc143.targets'))" />
   </Target>
 </Project>
